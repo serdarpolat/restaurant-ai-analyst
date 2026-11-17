@@ -1,0 +1,40 @@
+[project]
+name = "restaurant-ai-analyst"
+version = "0.1.0"
+description = "Ask a restaurant's sales database questions in plain Turkish or English. The model writes the SQL; a layered guard keeps it read-only and honest."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Serdar Polat" }]
+dependencies = [
+    # Demo data comes from project 1. Pinned to a commit so upstream changes never
+    # silently change this project's data; bump on purpose.
+    "restaurant-mcp-server @ git+https://github.com/serdarpolat/restaurant-mcp-server@a8f44be3ba40952c030075e987897eee61754407",
+    "sqlglot>=30,<31",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+restaurant-analyst = "analyst.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/analyst"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
